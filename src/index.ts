@@ -1,7 +1,7 @@
 import { create, UploadOptions } from '@actions/artifact';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import { globFiles, writeAdditionalArtifacts } from './utils';
+import { globFiles, writeAdditionalArtifacts, getVersionTag } from './utils';
 
 async function main (): Promise<void> {
   try {
@@ -19,7 +19,8 @@ async function main (): Promise<void> {
 
     // Upload the files
     const artifactClient = create();
-    const artifactName = github.context.repo.repo;
+    core.info('parsing tags');
+    const artifactName = core.getInput('name') || `${github.context.repo.repo}@${await getVersionTag()}`;
     const options: UploadOptions = {
       continueOnError: false,
     };
