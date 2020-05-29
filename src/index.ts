@@ -9,6 +9,12 @@ async function main (): Promise<void> {
     const globPatterns = core.getInput('files');
     const searchResults = await globFiles(globPatterns);
 
+    if (searchResults.length === 0) {
+      return core.info('The provided paths matched no files. No files will be uploaded.');
+    }
+
+    core.info(`${searchResults.length} files will be uploaded`);
+
     const artifactClient = create();
     const artifactName = github.context.repo.repo;
     const options: UploadOptions = {
