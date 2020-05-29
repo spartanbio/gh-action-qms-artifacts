@@ -1,0 +1,9 @@
+name: 'qms-release'
+description: 'Zip repo as artifacts'
+inputs:
+  files:
+    description: 'A glob pattern describing files and paths to add'
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
