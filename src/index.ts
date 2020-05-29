@@ -1,11 +1,13 @@
+import { create, UploadOptions } from '@actions/artifact';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import * as glob from '@actions/glob';
-import { create, UploadOptions } from '@actions/artifact';
-import { lstatSync } from 'fs';
+import { globFiles, writeAdditionalArtifacts } from './utils';
 
 async function main (): Promise<void> {
   try {
+    await writeAdditionalArtifacts();
+
+    // Search for files to upload
     const globPatterns = core.getInput('files');
     const searchResults = await globFiles(globPatterns);
 
@@ -15,6 +17,7 @@ async function main (): Promise<void> {
 
     core.info(`${searchResults.length} files will be uploaded`);
 
+    // Upload the files
     const artifactClient = create();
     const artifactName = github.context.repo.repo;
     const options: UploadOptions = {
@@ -41,28 +44,3 @@ async function main (): Promise<void> {
 }
 
 main();
-
-/**
- * Find files based on glob pattern
- * @param pattern The glob pattern
- */
-async function globFiles (pattern: string): Promise<string[]> {
-  const globber = await glob.create(pattern);
-  const files = await globber.glob();
-  const searchResults = [];
-
-  /*
-    Directories will be rejected if attempted to be uploaded. This includes just empty
-    directories so filter any directories out from the raw search results
-  */
-  for (const searchResult of files) {
-    if (!lstatSync(searchResult).isDirectory()) {
-      core.debug(`File:${searchResult} was found using the provided searchPath`);
-      searchResults.push(searchResult);
-    } else {
-      core.debug(`Removing ${searchResult} from rawSearchResults because it is a directory`);
-    }
-  }
-
-  return searchResults;
-}

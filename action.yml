@@ -2,8 +2,15 @@ name: 'qms-release'
 description: 'Zip repo as artifacts'
 inputs:
   files:
-    description: 'A glob pattern describing files and paths to add'
+    description: 'A new line separated list of glob patterns describing files and paths to add.'
     required: true
+  env:
+    description: 'A new line separated list of environment variables that should be bundled with the artifacts.'
+    required: false
+  hash:
+    description: 'Should the current git hash be included?'
+    required: false
+    default: 'true'
 runs:
   using: 'node12'
   main: 'dist/index.js'
