@@ -6,31 +6,28 @@ import { lstatSync } from 'fs';
 
 async function main (): Promise<void> {
   try {
-    if (github.context.eventName === 'pull_request') {
-      const globPatterns = core.getInput('files');
-      const searchResults = await globFiles(globPatterns);
-      const artifactClient = create();
-      const artifactName = github.context.repo.repo;
-      const options: UploadOptions = {
-        continueOnError: false,
-      };
-      const uploadResponse = await artifactClient.uploadArtifact(
-        artifactName,
-        searchResults,
-        '.',
-        options,
-      );
+    const globPatterns = core.getInput('files');
+    const searchResults = await globFiles(globPatterns);
 
-      if (uploadResponse.failedItems.length > 0) {
-        core.setFailed(
-          // eslint-disable-next-line max-len
-          `An error was encountered when uploading ${uploadResponse.artifactName}. There were ${uploadResponse.failedItems.length} items that failed to upload.`,
-        );
-      } else {
-        core.info(`Artifact ${uploadResponse.artifactName} has been successfully uploaded!`);
-      }
+    const artifactClient = create();
+    const artifactName = github.context.repo.repo;
+    const options: UploadOptions = {
+      continueOnError: false,
+    };
+    const uploadResponse = await artifactClient.uploadArtifact(
+      artifactName,
+      searchResults,
+      '.',
+      options,
+    );
+
+    if (uploadResponse.failedItems.length > 0) {
+      core.setFailed(
+        // eslint-disable-next-line max-len
+        `An error was encountered when uploading ${uploadResponse.artifactName}. There were ${uploadResponse.failedItems.length} items that failed to upload.`,
+      );
     } else {
-      core.info('Not a PR');
+      core.info(`Artifact ${uploadResponse.artifactName} has been successfully uploaded!`);
     }
   } catch (err) {
     core.setFailed(err.message);
