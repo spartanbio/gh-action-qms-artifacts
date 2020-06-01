@@ -7,7 +7,7 @@ GitHub actions to create artifacts suitable for the QMS.
 In your job's `steps` add:
 
 ```yml
-uses: spartanbio/gh-action-qms-release@v1
+uses: spartanbio/gh-action-qms-artifacts@v1
 ```
 
 ### Inputs
@@ -28,7 +28,7 @@ jobs:
   some-job:
     runs-on: ubuntu-latest
     steps:
-      uses: spartanbio/gh-action-qms-release@v1
+      uses: spartanbio/gh-action-qms-artifacts@v1
         with:
           files: |
             ./
