@@ -11,6 +11,9 @@ inputs:
     description: 'Should the current git hash be included?'
     required: false
     default: 'true'
+  name:
+    description: 'Name for the artifact'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
