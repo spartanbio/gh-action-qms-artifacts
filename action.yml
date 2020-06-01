@@ -1,4 +1,4 @@
-name: 'qms-release'
+name: 'qms-artifacts'
 description: 'Zip repo as artifacts'
 inputs:
   files:
