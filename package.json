@@ -1,6 +1,6 @@
 {
   "name": "@spartanbio/gh-action-qms-release",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GitHub actions to create artifacts suitable for the QMS, and automatically add tags with QMS document and revision numbers.",
   "main": "dist/index.js",
   "repository": "https://github.com/spartanbio/gh-action-qms-release.git",
@@ -9,7 +9,8 @@
   "private": true,
   "scripts": {
     "build": "ncc build src/index.ts",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "bump-version": "standard-version"
   },
   "dependencies": {
     "@actions/artifact": "^0.3.2",
@@ -33,6 +34,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.6",
+    "standard-version": "^8.0.0",
     "typescript": "^3.9.3"
   }
 }
