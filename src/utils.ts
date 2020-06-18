@@ -51,22 +51,14 @@ export async function writeAdditionalArtifacts (): Promise<void> {
  */
 export async function getVersionTag (): Promise<string> {
   core.info('Fetching tags');
+
   await exec('git fetch --depth=1 origin "+refs/tags/*:refs/tags/*"');
 
-  let tagSHA = '';
-
   core.info('Finding latest version');
-  await exec('git rev-list --tags="v[0-9]*"  --max-count=1', [], {
-    listeners: {
-      stdout: (data) => {
-        tagSHA = data.toString().trim();
-      },
-    },
-  });
 
   let tag = '';
 
-  await exec(`git describe --tags ${tagSHA}`, [], {
+  await exec('git tag -l "v[0-9]*" --sort=taggerdate | tail -n1', [], {
     listeners: {
       stdout: (data) => {
         tag = data.toString().trim();
